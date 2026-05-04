@@ -1,0 +1,158 @@
+ <!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday my man</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:italic,wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; background-color: #0f172a; font-family: 'Poppins', sans-serif;
+            overflow: hidden; color: white;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05); padding: 3rem 2rem; border-radius: 40px;
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 450px; width: 85%; z-index: 10; cursor: pointer;
+        }
+
+        .hidden { display: none; }
+
+        h2.title-italic { font-family: 'Playfair Display', serif; font-style: italic; font-size: 2.2rem; color: #e2e8f0; }
+        h2.yellow-text { font-family: 'Dancing Script', cursive; color: #fbbf24; font-size: 3rem; text-shadow: 2px 2px 10px rgba(251, 191, 36, 0.3); }
+
+        select { padding: 8px 15px; border-radius: 12px; background: white; color: #1e293b; margin: 10px 5px; font-weight: bold; }
+        button { background: #6366f1; color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 20px; }
+
+        /* ستايل التورتة */
+        .cake-container { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: 40px; }
+        .cake-tier { width: 180px; height: 60px; background: #6d4c41; border-radius: 15px 15px 5px 5px; border-bottom: 8px solid #4e342e; }
+        .tier-top { width: 140px; height: 50px; background: #f1c40f; margin-bottom: -5px; z-index: 2; border-bottom: 6px solid #d4ac0d; }
+        .candle { width: 12px; height: 40px; background: repeating-linear-gradient(45deg, #fff, #fff 5px, #e74c3c 5px, #e74c3c 10px); border-radius: 4px; z-index: 3; position: relative; }
+        .flame { width: 12px; height: 18px; background: #f39c12; border-radius: 50%; position: absolute; top: -20px; animation: flicker 0.6s infinite alternate; box-shadow: 0 0 15px #f1c40f; }
+        @keyframes flicker { from { transform: scale(1); } to { transform: scale(1.1); } }
+        .table-stand { width: 220px; height: 15px; background: #bdc3c7; border-radius: 20px; margin-top: 5px; }
+
+        /* العداد والقمر */
+        .moon-container { position: relative; width: 100px; height: 100px; background: #f8fafc; border-radius: 50%; margin: 20px auto; overflow: hidden; }
+        .moon-shadow { position: absolute; top: 0; right: 0; width: 100%; height: 100%; background: #0f172a; transition: width 0.8s; }
+        .timer-container { display: flex; justify-content: center; gap: 10px; }
+        .time-box { background: rgba(255,255,255,0.08); padding: 10px; border-radius: 15px; min-width: 60px; }
+
+        .balloon { position: absolute; width: 45px; height: 65px; border-radius: 50%; bottom: -100px; animation: floatUp 7s linear forwards; }
+        @keyframes floatUp { to { transform: translateY(-125vh); } }
+    </style>
+</head>
+<body>
+
+    <!-- الصفحة 1: الدخول -->
+    <div id="login-section" class="card">
+        <h2 class="title-italic">Hii habobii 🎈🎈</h2>
+        <p>Your birthday🎂🥳🥳</p>
+        <select id="day-select"></select>
+        <select id="month-select"></select>
+        <button onclick="checkDate()">Confirm Date ✨</button>
+    </div>
+
+    <!-- الصفحة 2: العداد -->
+    <div id="countdown-section" class="card hidden">
+        <h2 class="title-italic">Waiting for the moon to be full</h2>
+        <div class="moon-container"><div class="moon-shadow" id="moon-shadow"></div></div>
+        <div class="timer-container">
+            <div class="time-box"><span id="days">00</span><small>Days</small></div>
+            <div class="time-box"><span id="hours">00</span><small>Hours</small></div>
+            <div class="time-box"><span id="mins">00</span><small>Mins</small></div>
+            <div class="time-box"><span id="secs">00</span><small>Secs</small></div>
+        </div>
+        <button id="action-btn" onclick="showCelebration()" style="display: none;">Let's Celebrate 🎉</button>
+    </div>
+
+    <!-- الصفحة 3: الاحتفال (الضغط هنا يفتح التورتة) -->
+    <div id="party-section" class="card hidden" onclick="showCakePage()">
+        <h1 style="font-size: 4rem; margin: 0;">🥳</h1>
+        <h2 class="yellow-text">Happy Birthday!</h2>
+        <p>The moon is full and shining bright for you!<br>bhbk awiii ya haiatty ✨</p>
+        <p style="font-size: 0.9rem; color: #fbbf24; margin-top: 15px;">(اضغط على الشاشة للمفاجأة 👆)</p>
+    </div>
+
+    <!-- الصفحة 4: صفحة التورتة -->
+    <div id="cake-section" class="card hidden">
+        <h2 class="title-italic">Make a wish! 🎂</h2>
+        <div class="cake-container">
+            <div class="candle"><div class="flame"></div></div>
+            <div class="cake-tier tier-top"></div>
+            <div class="cake-tier tier-bottom"></div>
+            <div class="table-stand"></div>
+        </div>
+        <p style="margin-top: 20px; font-family: 'Dancing Script'; font-size: 1.5rem; color: #fbbf24;">I love you more than words can say ❤️</p>
+    </div>
+
+    <!-- ملفات الصوت -->
+    <audio id="waiting-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" loop></audio>
+    <audio id="birthday-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+    <script>
+        const dSel = document.getElementById('day-select');
+        const mSel = document.getElementById('month-select');
+        for(let i=1; i<=31; i++) dSel.options.add(new Option(i, i));
+        for(let i=1; i<=12; i++) mSel.options.add(new Option(i, i));
+
+        function checkDate() {
+            if (dSel.value == "3" && mSel.value == "6") { 
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('countdown-section').classList.remove('hidden');
+                // تشغيل موسيقى الانتظار
+                document.getElementById('waiting-music').play().catch(() => {});
+                startTimer();
+            } else { alert("Wrong date! Try again ❤️"); }
+        }
+
+        function startTimer() {
+            const target = new Date(2026, 5, 3); // شهر 5 يعني يونيو في JS
+            setInterval(() => {
+                const diff = target - new Date();
+                if (diff <= 0) {
+                    document.getElementById('action-btn').style.display = 'block';
+                    ['days','hours','mins','secs'].forEach(id => document.getElementById(id).innerText = '00');
+                    return;
+                }
+                const d = Math.floor(diff / 86400000);
+                const h = Math.floor((diff % 86400000) / 3600000);
+                const m = Math.floor((diff % 3600000) / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
+                document.getElementById('days').innerText = d < 10 ? '0'+d : d;
+                document.getElementById('hours').innerText = h < 10 ? '0'+h : h;
+                document.getElementById('mins').innerText = m < 10 ? '0'+m : m;
+                document.getElementById('secs').innerText = s < 10 ? '0'+s : s;
+                document.getElementById('moon-shadow').style.width = (Math.min(d, 30) / 30 * 100) + "%";
+            }, 1000);
+        }
+
+        function showCelebration() {
+            // إيقاف موسيقى الانتظار وتشغيل موسيقى العيد
+            document.getElementById('waiting-music').pause();
+            document.getElementById('countdown-section').classList.add('hidden');
+            document.getElementById('party-section').classList.remove('hidden');
+            document.getElementById('birthday-music').play().catch(() => {});
+            setInterval(createBalloon, 400);
+        }
+
+        function showCakePage() {
+            document.getElementById('party-section').classList.add('hidden');
+            document.getElementById('cake-section').classList.remove('hidden');
+        }
+
+        function createBalloon() {
+            const b = document.createElement('div');
+            b.className = 'balloon';
+            b.style.left = Math.random() * 100 + 'vw';
+            b.style.backgroundColor = `hsl(${Math.random() * 360}, 75%, 65%)`;
+            document.body.appendChild(b);
+            setTimeout(() => b.remove(), 7000);
+        }
+    </script>
+</body>
+</html>
